@@ -1,0 +1,10 @@
+# golang
+
+# gin
+gin-bin
+gin.log
+
+# gorm
+gorm.log
+
+.env

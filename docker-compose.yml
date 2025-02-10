@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  user-service:
+    build: ./apps/user-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=${PORT}
+      - DB_USER=${DB_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_PASS=${DB_PASS}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+    # depends_on:
+    #   - mariadb
+
+  feed-service:
+    build: ./apps/feed-service
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=${PORT}
+      - DB_USER=${DB_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_PASS=${DB_PASS}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+    # depends_on:
+    #   - mariadb
+
+  notification-service:
+    build: ./apps/notification-service
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=${PORT}
+      - DB_USER=${DB_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_PASS=${DB_PASS}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+
+  # mariadb:
+  #   image: mariadb:latest
+  #   restart: always
+  #   environment:
+  #     - MARIADB_ROOT_PASSWORD=rootpw
+  #     - MARIADB_DATABASE=msadb
+  #   ports:
+  #     - "3306:3306"
