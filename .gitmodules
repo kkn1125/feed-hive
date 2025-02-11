@@ -1,0 +1,3 @@
+[submodule "feed-hive-view"]
+	path = feed-hive-view
+	url = https://github.com/kkn1125/feed-hive-view.git
