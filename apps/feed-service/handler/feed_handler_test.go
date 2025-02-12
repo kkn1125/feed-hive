@@ -22,10 +22,17 @@ func (m *MockFeedRepository) FindAll() (*[]model.Feed, error) {
 	args := m.Called()
 	return args.Get(0).(*[]model.Feed), args.Error(1)
 }
+
 func (m *MockFeedRepository) FindById(id string) (*model.Feed, error) {
 	args := m.Called(id)
 	return args.Get(0).(*model.Feed), args.Error(1)
 }
+
+func (m *MockFeedRepository) FindNotificationById(id string) (*model.Notification, error) {
+	args := m.Called(id)
+	return args.Get(0).(*model.Notification), args.Error(1)
+}
+
 func (m *MockFeedRepository) Create(feed *model.Feed) (uint, error) {
 	args := m.Called(feed)
 	feed.ID++

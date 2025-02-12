@@ -70,3 +70,23 @@ func (handler *FeedHandler) CreateFeed(c *gin.Context) {
 		"created": &feed.ID,
 	})
 }
+
+// func (handler *FeedHandler) SendMarkAsRead(c *gin.Context) {
+// 	notificationId := c.Param("notificationId")
+// 	notification, err := handler.repo.FindNotificationById(notificationId)
+// 	if err != nil {
+// 		c.JSON(404, gin.H{
+// 			"error": "Failed to find feed",
+// 		})
+// 		return
+// 	}
+
+// 	go library.SendMarkAsRead(notification.ID)
+
+// 	log.Printf("notification: %v, content: %v", notification.ID, notification.Message)
+
+// 	c.JSON(200, gin.H{
+// 		"readed": &notification.ID,
+// 	})
+
+// }

@@ -26,10 +26,10 @@ func main() {
 
 	switch arg {
 	case "migrateforce":
-		database.DB.Migrator().DropTable(&model.Feed{}, &model.Comment{}, &model.Likes{})
-		database.DB.AutoMigrate(&model.Feed{}, &model.Comment{}, &model.Likes{})
+		database.DB.Migrator().DropTable(&model.Feed{}, &model.Comment{}, &model.Like{})
+		database.DB.AutoMigrate(&model.Feed{}, &model.Comment{}, &model.Like{})
 	case "migrate":
-		database.DB.AutoMigrate(&model.Feed{}, &model.Comment{}, &model.Likes{})
+		database.DB.AutoMigrate(&model.Feed{}, &model.Comment{}, &model.Like{})
 	default:
 		r := setupRouter()
 		r.Run(fmt.Sprintf(":%s", variable.PORT))

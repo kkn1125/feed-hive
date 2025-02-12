@@ -7,6 +7,4 @@ type Notification struct {
 	ReceiverId uint // 알림 받을 사용자
 	Message    string
 	IsRead     bool `gorm:"default:false"`
-
-	Feed Feed `gorm:"foreignKey:FeedId;constraint:onDelete:CASCADE,onUpdate:CASCADE;"`
 }

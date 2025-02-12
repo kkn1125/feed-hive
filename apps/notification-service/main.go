@@ -33,6 +33,7 @@ func main() {
 		database.DB.AutoMigrate(&model.Notification{})
 	default:
 		go library.Receive()
+		// go library.ReceiveMarkAsRead()
 		r := setupRouter()
 		r.Run(fmt.Sprintf(":%s", variable.PORT))
 	}

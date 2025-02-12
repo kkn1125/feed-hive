@@ -17,5 +17,7 @@ func Users(r *gin.RouterGroup) {
 	r.GET("/", userHandler.FindAllUser)
 	r.GET("/:id", userHandler.FindUserById)
 	r.GET("/email/:email", userHandler.FindUserByEmail)
+	r.GET("/subscriptions/:followerId", userHandler.GetSubscriptions)
 	r.POST("/", userHandler.CreateUser)
+	r.POST("/follow/:followerId/:followingId", userHandler.Subscribe)
 }

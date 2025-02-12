@@ -5,4 +5,6 @@ type Comment struct {
 	UserId  uint
 	FeedId  uint
 	Content string
+
+	Feed Feed `gorm:"foreignKey:FeedId;constraint:onDelete:CASCADE,onUpdate:CASCADE;"`
 }

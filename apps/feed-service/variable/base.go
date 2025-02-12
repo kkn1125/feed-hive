@@ -9,15 +9,17 @@ import (
 )
 
 var (
-	err       error
-	DB_USER   string
-	DB_PASS   string
-	DB_HOST   string
-	DB_PORT   string
-	DB_NAME   string
-	PORT      string
-	AMQP_USER string
-	AMQP_PASS string
+	err          error
+	DB_USER      string
+	DB_PASS      string
+	DB_HOST      string
+	DB_PORT      string
+	DB_NAME      string
+	PORT         string
+	AMQP_USER    string
+	AMQP_PASS    string
+	ADD_FEED     string
+	MARK_AS_READ string
 )
 
 func LoadEnv() {
@@ -42,5 +44,7 @@ func LoadEnv() {
 	PORT = os.Getenv("PORT")
 	AMQP_USER = os.Getenv("AMQP_USER")
 	AMQP_PASS = os.Getenv("AMQP_PASS")
+	ADD_FEED = os.Getenv("ADD_FEED")
+	MARK_AS_READ = os.Getenv("MARK_AS_READ")
 
 }

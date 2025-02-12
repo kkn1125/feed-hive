@@ -15,6 +15,7 @@ import (
 type FeedRepository interface {
 	FindAll() (*[]model.Feed, error)
 	FindById(id string) (*model.Feed, error)
+	FindNotificationById(notificationId string) (*model.Notification, error)
 	Create(feed *model.Feed) (uint, error)
 }
 
@@ -43,6 +44,14 @@ func (r *feedRepository) FindById(id string) (*model.Feed, error) {
 		return nil, err
 	}
 	return &feed, nil
+}
+
+func (r *feedRepository) FindNotificationById(notificationId string) (*model.Notification, error) {
+	var notification model.Notification
+	if err := r.db.Find(&notification, notificationId).Error; err != nil {
+		return nil, err
+	}
+	return &notification, nil
 }
 
 func (r *feedRepository) Create(feed *model.Feed) (uint, error) {

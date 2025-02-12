@@ -3,6 +3,7 @@ package repository
 import (
 	"feedhive/users/database"
 	"feedhive/users/model"
+	"fmt"
 	"log"
 
 	"gorm.io/gorm"
@@ -17,6 +18,8 @@ type UserRepository interface {
 	FindById(id string) (*model.User, error)
 	FindByEmail(email string) (*model.User, error)
 	Create(user *model.User) (uint, error)
+	Subscribe(followerId uint, followingId uint) (bool, error)
+	GetSubscriptions(followerId uint) (*[]model.User, error)
 }
 
 type userRepository struct {
@@ -60,4 +63,64 @@ func (r *userRepository) Create(user *model.User) (uint, error) {
 		return 0, result.Error
 	}
 	return user.ID, nil
+}
+
+func (r *userRepository) GetSubscriptions(followerId uint) (*[]model.User, error) {
+	var subscriptions []model.User
+
+	if err := r.db.Raw(`
+		SELECT
+			u.id, u.name, u.email,
+			u.created_at, u.updated_at, u.deleted_at
+		FROM users u
+		WHERE u.id = ?
+	`, followerId).Scan(&subscriptions).Error; err != nil {
+		log.Printf("GetSubscriptions Error: %v\n", err)
+		return nil, err
+	}
+
+	for i := range subscriptions {
+		if err := r.db.Model(&subscriptions[i]).Association("Followers").Find(&subscriptions[i].Followers); err != nil {
+			log.Printf("Failed to load Followings: %v\n", err)
+		}
+		if err := r.db.Model(&subscriptions[i]).Association("Followings").Find(&subscriptions[i].Followings); err != nil {
+			log.Printf("Failed to load Followers: %v\n", err)
+		}
+	}
+
+	return &subscriptions, nil
+}
+
+func (r *userRepository) Subscribe(followerId uint, followingId uint) (bool, error) {
+	result := r.db.Find(&model.User{}, followerId)
+
+	if result.Error != nil {
+		log.Printf("Subscribe Error: %v\n", result.Error)
+		return false, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		message := fmt.Errorf("not found follower_id: %v", followerId)
+		return false, message
+	}
+
+	result = r.db.Find(&model.User{}, followingId)
+
+	if result.Error != nil {
+		log.Printf("Subscribe Error: %v\n", result.Error)
+		return false, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		message := fmt.Errorf("not found following_id: %v", followingId)
+		return false, message
+	}
+
+	result = r.db.Create(&model.Subscription{FollowerId: followerId, FollowingId: followingId})
+
+	if result.Error != nil {
+		log.Printf("Subscribe Error: %v\n", result.Error)
+		return false, result.Error
+	}
+	return true, nil
 }

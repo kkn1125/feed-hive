@@ -38,6 +38,16 @@ func (m *MockUserRepository) Create(user *model.User) (uint, error) {
 	return args.Get(0).(uint), args.Error(1)
 }
 
+func (m *MockUserRepository) Subscribe(followerId uint, followingId uint) (bool, error) {
+	args := m.Called(followerId, followingId)
+	return args.Get(0).(bool), args.Error(1)
+}
+
+func (m *MockUserRepository) GetSubscriptions(followerId uint) (*[]model.User, error) {
+	args := m.Called(followerId)
+	return args.Get(0).(*[]model.User), args.Error(1)
+}
+
 func TestControllerSuite(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
